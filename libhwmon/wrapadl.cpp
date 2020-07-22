@@ -145,65 +145,6 @@ wrap_adl_handle* wrap_adl_create()
             adlh->adl_gpucount++;
         }
     }
-
-
-    adlh->adl_opencl_device_id = (int*)calloc(adlh->adl_gpucount, sizeof(int));
-    if (adlh->adl_gpucount > 0)
-    {
-        // Get and count OpenCL devices.
-        adlh->opencl_gpucount = 0;
-        std::vector<cl::Platform> platforms;
-        cl::Platform::get(&platforms);
-        std::vector<cl::Device> platdevs;
-        for (unsigned p = 0; p < platforms.size(); p++)
-        {
-            std::string platformName = platforms[p].getInfo<CL_PLATFORM_NAME>();
-            if (platformName == "AMD Accelerated Parallel Processing")
-            {
-                platforms[p].getDevices(CL_DEVICE_TYPE_GPU | CL_DEVICE_TYPE_ACCELERATOR, &platdevs);
-                adlh->opencl_gpucount = platdevs.size();
-                break;
-            }
-        }
-        adlh->opencl_adl_device_id = (int*)calloc(adlh->opencl_gpucount, sizeof(int));
-
-        // Map ADL phys device id to Opencl
-        for (int i = 0; i < adlh->adl_gpucount; i++)
-        {
-            for (unsigned j = 0; j < platdevs.size(); j++)
-            {
-                cl::Device cldev = platdevs[j];
-                cl_device_topology_amd topology;
-                int status = clGetDeviceInfo(cldev(), CL_DEVICE_TOPOLOGY_AMD,
-                    sizeof(cl_device_topology_amd), &topology, nullptr);
-                if (status == CL_SUCCESS)
-                {
-                    if (topology.raw.type == CL_DEVICE_TOPOLOGY_TYPE_PCIE_AMD)
-                    {
-                        if (adlh->devs[adlh->phys_logi_device_id[i]].iBusNumber ==
-                                (int)topology.pcie.bus &&
-                            adlh->devs[adlh->phys_logi_device_id[i]].iDeviceNumber ==
-                                (int)topology.pcie.device &&
-                            adlh->devs[adlh->phys_logi_device_id[i]].iFunctionNumber ==
-                                (int)topology.pcie.function)
-                        {
-#if 0
-                            printf("[DEBUG] - ADL GPU[%d]%d,%d,%d matches OpenCL GPU[%d]%d,%d,%d\n",
-                            adlh->phys_logi_device_id[i],
-                            adlh->devs[adlh->phys_logi_device_id[i]].iBusNumber,
-                            adlh->devs[adlh->phys_logi_device_id[i]].iDeviceNumber,
-                            adlh->devs[adlh->phys_logi_device_id[i]].iFunctionNumber,
-                            j, (int)topology.pcie.bus, (int)topology.pcie.device, (int)topology.pcie.function);
-#endif
-                            adlh->adl_opencl_device_id[i] = j;
-                            adlh->opencl_adl_device_id[j] = i;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     return adlh;
 }
 
