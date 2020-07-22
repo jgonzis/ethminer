@@ -77,7 +77,7 @@ wrap_adl_handle* wrap_adl_create()
     adlh->adl2MainControlDestroy = (wrap_adlReturn_t(*)(ADL_CONTEXT_HANDLE))wrap_dlsym(
         adlh->adl_dll, "ADL_Main_Control_Destroy");
     adlh->adl2Overdrive6CurrentPowerGet = (wrap_adlReturn_t(*)(ADL_CONTEXT_HANDLE, int, int,
-        int*))wrap_dlsym(adlh->adl_dll, "ADL2_Overdrive6_CurrentPower_Get");
+        int*))wrap_dlsym(adlh->adl_dll, "ADL_Overdrive5_PowerControl_Get");
     adlh->adl2MainControlRefresh = (wrap_adlReturn_t(*)(ADL_CONTEXT_HANDLE))wrap_dlsym(
         adlh->adl_dll, "ADL2_Main_Control_Refresh");
 
