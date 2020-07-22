@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#include <windows.h>
 
 #include "wrapadl.h"
 #include "wraphelper.h"
