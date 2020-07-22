@@ -137,7 +137,7 @@ typedef struct
     wrap_adlReturn_t (*adlMainControlDestroy)(void);
     wrap_adlReturn_t (*adl2MainControlCreate)(ADL_MAIN_MALLOC_CALLBACK, int, ADL_CONTEXT_HANDLE*);
     wrap_adlReturn_t (*adl2MainControlDestroy)(ADL_CONTEXT_HANDLE);
-    wrap_adlReturn_t (*adlOverdrive5CurrentPowerGet)(ADL_CONTEXT_HANDLE, int, int, int*);
+    wrap_adlReturn_t (*adl2Overdrive6CurrentPowerGet)(ADL_CONTEXT_HANDLE, int, int, int*);
     wrap_adlReturn_t (*adl2MainControlRefresh)(ADL_CONTEXT_HANDLE);
 } wrap_adl_handle;
 
